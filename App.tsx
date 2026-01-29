@@ -1,17 +1,57 @@
-import React from 'react';
-import Header from './components/Header';
+import React, { useEffect } from 'react';
+import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
+import Home from './pages/Home';
+import Quote from './pages/Quote';
+import Success from './pages/Success';
+import Gallery from './pages/Gallery';
+import ShowDetail from './pages/ShowDetail';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import PrivacyPolicy from './components/PrivacyPolicy';
+
+// Scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans flex flex-col">
-      <Header />
-      <main className="flex-grow">
-        <PrivacyPolicy />
-      </main>
-      <Footer />
-    </div>
+    <HashRouter>
+      <ScrollToTop />
+      <div className="flex flex-col min-h-screen">
+        <Routes>
+          {/* Routes with Navbar and Footer */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Home />
+                <Footer />
+              </>
+            }
+          />
+          <Route
+            path="/gallery"
+            element={
+              <>
+                <Navbar />
+                <Gallery />
+                <Footer />
+              </>
+            }
+          />
+          
+          {/* Routes that might have different layouts */}
+          <Route path="/quote" element={<Quote />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/show/:id" element={<ShowDetail />} />
+        </Routes>
+      </div>
+    </HashRouter>
   );
 };
 
